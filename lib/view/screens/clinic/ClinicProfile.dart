@@ -1,13 +1,15 @@
+// ignore_for_file: file_names, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class ClinicProfile extends StatefulWidget {
   const ClinicProfile({super.key});
 
   @override
-  _ClinicProfileState createState() => _ClinicProfileState();
+  ClinicProfileState createState() => ClinicProfileState();
 }
 
-class _ClinicProfileState extends State<ClinicProfile> {
+class ClinicProfileState extends State<ClinicProfile> {
   String clinicName = 'Cahaya Mitra';
   String clinicUsername = 'CahayaMitra1';
   String clinicEmail = 'cahayamitra@example.com';
@@ -173,7 +175,8 @@ class InfoRow extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  TextEditingController _controller = TextEditingController(text: value);
+                  TextEditingController controller =
+                      TextEditingController(text: value);
                   return Theme(
                     data: Theme.of(context).copyWith(
                       textSelectionTheme: TextSelectionThemeData(
@@ -184,7 +187,7 @@ class InfoRow extends StatelessWidget {
                     child: AlertDialog(
                       title: Text('Edit $title'),
                       content: TextField(
-                        controller: _controller,
+                        controller: controller,
                         decoration: InputDecoration(
                           hintText: "$title",
                           focusedBorder: UnderlineInputBorder(
