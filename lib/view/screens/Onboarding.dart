@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 class OnboardingPage extends StatefulWidget {
   final Function(Locale) setLocale;
 
-  OnboardingPage({required this.setLocale});
+  const OnboardingPage({super.key, required this.setLocale});
 
   @override
+  // ignore: library_private_types_in_public_api
   _OnboardingPageState createState() => _OnboardingPageState();
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
   bool _isExpanded = false;
-  Locale _selectedLocale = Locale('id');
+  Locale _selectedLocale = const Locale('id');
 
   void _toggleExpand() {
     setState(() {
@@ -46,8 +47,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   height: 322,
                 ),
               ),
-              SizedBox(height: 0), // Mengatur jarak antara gambar dan teks menjadi 0
-              Text(
+              const SizedBox(height: 0), // Mengatur jarak antara gambar dan teks menjadi 0
+              const Text(
                 'Choose language preferences',
                 style: TextStyle(
                   fontSize: 16,
@@ -56,7 +57,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   color: Color(0xFF333333), // Mengatur warna teks menjadi hitam dengan kode 333333
                 ),
               ),
-              SizedBox(height: 10), // Mengatur jarak antara teks dan opsi bahasa
+              const SizedBox(height: 10), // Mengatur jarak antara teks dan opsi bahasa
               GestureDetector(
                 onTap: _toggleExpand,
                 child: Container(
@@ -69,14 +70,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
                                 Image.asset(languageImage, width: 24),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(languageText),
                               ],
                             ),
@@ -96,11 +97,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               ? [
                                   GestureDetector(
                                     onTap: () {
-                                      _selectLanguage(Locale('en'));
+                                      _selectLanguage(const Locale('en'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                      decoration: const BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(8),
@@ -110,8 +111,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       child: Row(
                                         children: [
                                           Image.asset('assets/english_flag.png', width: 24),
-                                          SizedBox(width: 10),
-                                          Text('English (UK)'),
+                                          const SizedBox(width: 10),
+                                          const Text('English (UK)'),
                                         ],
                                       ),
                                     ),
@@ -120,11 +121,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               : [
                                   GestureDetector(
                                     onTap: () {
-                                      _selectLanguage(Locale('id'));
+                                      _selectLanguage(const Locale('id'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                      decoration: const BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(8),
@@ -134,8 +135,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       child: Row(
                                         children: [
                                           Image.asset('assets/indonesia.png', width: 24),
-                                          SizedBox(width: 10),
-                                          Text('Indonesia'),
+                                          const SizedBox(width: 10),
+                                          const Text('Indonesia'),
                                         ],
                                       ),
                                     ),
@@ -146,7 +147,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
