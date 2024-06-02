@@ -1,12 +1,24 @@
-// ignore_for_file: file_names, prefer_const_constructors
+// ignore_for_file: file_names, prefer_const_constructors, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
+  final String usernameChat;
+  final String idChat;
+  final bool showCallButton;
+  final bool showProfileImage;
+  final String profileImagePath;
 
-  CustomAppBar({super.key}) : preferredSize = Size.fromHeight(72.0);
+  CustomAppBar({
+    super.key,
+    required this.usernameChat,
+    required this.idChat,
+    required this.showCallButton,
+    required this.showProfileImage,
+    required this.profileImagePath,
+  }) : preferredSize = Size.fromHeight(72.0);
 
   @override
   Widget build(BuildContext context) {
@@ -21,45 +33,51 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Row(
         children: [
-          // ignore: sized_box_for_whitespace
-          Container(
-            height: 45,
-            width: 45,
-            child: CircleAvatar(
-                //backgroundImage: AssetImage(), // Replace with actual image path
+          if (showProfileImage)
+            Visibility(
+              visible: showProfileImage,
+              child: Container(
+                height: 45,
+                width: 45,
+                child: CircleAvatar(
+                  backgroundImage: profileImagePath.isNotEmpty
+                      ? AssetImage(profileImagePath)
+                      : null,
                 ),
-          ),
-          SizedBox(width: 12),
+              ),
+            ),
+          if (showProfileImage) SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                'Hermione Granger',
+                usernameChat,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'CustomFont',
                   fontSize: 17,
                 ),
               ),
-              Text(
-                'AB1234CDE',
-                style: TextStyle(
+              if (idChat != null && idChat.isNotEmpty)
+                Text(
+                  idChat,
+                  style: TextStyle(
                     color: Colors.white,
-                    fontFamily: 'CustomFont',
-                    fontSize: 12),
-              ),
+                    fontSize: 12,
+                  ),
+                ),
             ],
           ),
         ],
       ),
       actions: [
-        IconButton(
-          icon: Icon(Icons.call, color: Colors.white),
-          onPressed: () {
-            // Handle call button press
-          },
-        ),
+        if (showCallButton)
+          IconButton(
+            icon: Icon(Icons.call, color: Colors.white),
+            onPressed: () {
+              // Handle call button press
+            },
+          ),
       ],
     );
   }

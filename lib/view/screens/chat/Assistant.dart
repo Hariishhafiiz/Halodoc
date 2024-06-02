@@ -5,14 +5,14 @@ import 'package:rekmed/view/widget/chat/ChatMessage.dart';
 import 'package:rekmed/view/widget/chat/CustomAppBar.dart';
 import 'package:rekmed/view/widget/chat/PresetResponseButtons.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+class Assistant extends StatefulWidget {
+  const Assistant({super.key});
 
   @override
   ChatScreenState createState() => ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<Assistant> {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
 
@@ -82,11 +82,11 @@ class ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        showCallButton: true,
+        showCallButton: false,
+        showProfileImage: false,
         profileImagePath: '',
-        usernameChat: 'Harmonie Granger',
-        idChat: 'AB1234CDE',
-        showProfileImage: true,
+        usernameChat: 'Halodoc Assistant',
+        idChat: '',
       ),
       body: Column(
         children: <Widget>[

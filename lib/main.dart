@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rekmed/utlis/theme.dart';
 import 'package:rekmed/view/screens/Onboarding.dart';
+import 'package:rekmed/view/screens/chat/Assistant.dart';
 import 'package:rekmed/view/screens/chat/ChatScreen.dart';
 import 'firebase_options.dart';
 
@@ -21,7 +22,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.theme,
-      home: const ChatScreen(),
+      home: const Assistant(),
     );
   }
 }
