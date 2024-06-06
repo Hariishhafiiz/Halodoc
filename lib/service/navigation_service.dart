@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rekmed/view/pages/register_page.dart';
 import 'package:rekmed/view/pages/login_page.dart';
 import 'package:rekmed/view/pages/home_page.dart';
+import 'package:rekmed/view/screens/Onboarding.dart';
+import 'package:rekmed/view/screens/InfoCustService.dart';
 
 
 class NavigationService{
@@ -11,7 +13,8 @@ class NavigationService{
     "/login":(context)=> LoginPage(),
     "/Register":(context)=> RegisterPage(),
     "/home":(context)=> Homepage(),
-    
+    "/onboarding":(context)=> OnboardingPage(setLocale: (locale) {},),
+    "/infocustservice":(context)=> InfoCustService(),
   };
 
   GlobalKey<NavigatorState>? get navigatorKey{

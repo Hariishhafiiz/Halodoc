@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rekmed/service/navigation_service.dart';
+import 'package:get_it/get_it.dart';
 
 class OnboardingPage extends StatefulWidget {
   final Function(Locale) setLocale;
@@ -12,11 +14,19 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   bool _isExpanded = false;
   Locale _selectedLocale = Locale('id');
+  final GetIt _getIt = GetIt.instance;
+
+  late NavigationService _navigationService;
 
   void _toggleExpand() {
     setState(() {
       _isExpanded = !_isExpanded;
     });
+  }
+
+  void initState() {
+    super.initState();
+    _navigationService = _getIt.get<NavigationService>();
   }
 
   void _selectLanguage(Locale locale) {
@@ -30,8 +40,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    String languageText = _selectedLocale.languageCode == 'id' ? 'Indonesia' : 'English (UK)';
-    String languageImage = _selectedLocale.languageCode == 'id' ? 'assets/indonesia.png' : 'assets/english_flag.png';
+    String languageText =
+        _selectedLocale.languageCode == 'id' ? 'Indonesia' : 'English (UK)';
+    String languageImage = _selectedLocale.languageCode == 'id'
+        ? 'assets/indonesia.png'
+        : 'assets/english.png';
 
     return Scaffold(
       body: Center(
@@ -40,23 +53,27 @@ class _OnboardingPageState extends State<OnboardingPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Center(
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0),
                 child: Image.asset(
                   'assets/LanguageOnboarding.png', // Pastikan path ke gambar benar
                   height: 322,
                 ),
               ),
-              SizedBox(height: 0), // Mengatur jarak antara gambar dan teks menjadi 0
+              SizedBox(
+                  height: 0), // Mengatur jarak antara gambar dan teks menjadi 0
               Text(
                 'Choose language preferences',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
-                  color: Color(0xFF333333), // Mengatur warna teks menjadi hitam dengan kode 333333
+                  color: Color(
+                      0xFF333333), // Mengatur warna teks menjadi hitam dengan kode 333333
                 ),
               ),
-              SizedBox(height: 10), // Mengatur jarak antara teks dan opsi bahasa
+              SizedBox(
+                  height: 10), // Mengatur jarak antara teks dan opsi bahasa
               GestureDetector(
                 onTap: _toggleExpand,
                 child: Container(
@@ -69,7 +86,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -83,7 +101,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             GestureDetector(
                               onTap: _toggleExpand,
                               child: Icon(
-                                _isExpanded ? Icons.expand_more : Icons.chevron_right,
+                                _isExpanded
+                                    ? Icons.expand_more
+                                    : Icons.chevron_right,
                                 color: Colors.black,
                               ),
                             ),
@@ -99,7 +119,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       _selectLanguage(Locale('en'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 15),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
@@ -109,7 +130,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Image.asset('assets/english_flag.png', width: 24),
+                                          Image.asset('assets/english.png',
+                                              width: 24),
                                           SizedBox(width: 10),
                                           Text('English (UK)'),
                                         ],
@@ -123,7 +145,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       _selectLanguage(Locale('id'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 15),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
@@ -133,7 +156,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Image.asset('assets/indonesia.png', width: 24),
+                                          Image.asset('assets/indonesia.png',
+                                              width: 24),
                                           SizedBox(width: 10),
                                           Text('Indonesia'),
                                         ],
@@ -147,6 +171,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ),
               ),
               Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(
+                    bottom: 30.0), // Add padding for the button
+                child: ElevatedButton(
+                  onPressed: () async {
+                    _navigationService.pushReplacementNamed("/login");
+                  },
+                  child: Text('Next'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent, // Background color
+                    foregroundColor: Colors.white, // Text color
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

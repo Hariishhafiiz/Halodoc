@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
             print(result);
             
             if(result){
-              _navigationService.pushReplacementNamed("/home");
+              _navigationService.pushReplacementNamed("/infocustservice");
 
             }else{
               _alertService.showToast(
