@@ -25,41 +25,42 @@ class _OnboardingPageState extends State<OnboardingPage> {
       _isExpanded = false;
     });
     widget.setLocale(locale);
+    // You might want to save the language preference here
   }
 
   @override
   Widget build(BuildContext context) {
     String languageText = _selectedLocale.languageCode == 'id' ? 'Indonesia' : 'English (UK)';
-    String languageImage = _selectedLocale.languageCode == 'id' ? 'assets/indonesia.png' : 'assets/english.png';
+    String languageImage = _selectedLocale.languageCode == 'id' ? 'assets/indonesia.png' : 'assets/english_flag.png';
 
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 130.0), 
+          padding: const EdgeInsets.only(top: 50.0), // Menambah padding atas
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Center(
                 child: Image.asset(
-                  'assets/englishhh.png', 
-                  height: 175,
+                  'assets/LanguageOnboarding.png', // Pastikan path ke gambar benar
+                  height: 322,
                 ),
               ),
-              SizedBox(height: 51), 
+              SizedBox(height: 0), // Mengatur jarak antara gambar dan teks menjadi 0
               Text(
                 'Choose language preferences',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
-                  color: Color(0xFF333333), 
+                  color: Color(0xFF333333), // Mengatur warna teks menjadi hitam dengan kode 333333
                 ),
               ),
-              SizedBox(height: 10), 
+              SizedBox(height: 10), // Mengatur jarak antara teks dan opsi bahasa
               GestureDetector(
                 onTap: _toggleExpand,
                 child: Container(
-                  width: 225, 
+                  width: 225, // Mengurangi lebar container
                   decoration: BoxDecoration(
                     color: Colors.redAccent.shade100.withOpacity(0.2),
                     border: Border.all(color: Colors.redAccent),
@@ -108,7 +109,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Image.asset('assets/english.png', width: 24),
+                                          Image.asset('assets/english_flag.png', width: 24),
                                           SizedBox(width: 10),
                                           Text('English (UK)'),
                                         ],
