@@ -1,17 +1,20 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatefulWidget {
   final Function(Locale) setLocale;
 
-  OnboardingPage({required this.setLocale});
+  const OnboardingPage({super.key, required this.setLocale});
 
   @override
+  // ignore: library_private_types_in_public_api
   _OnboardingPageState createState() => _OnboardingPageState();
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
   bool _isExpanded = false;
-  Locale _selectedLocale = Locale('id');
+  Locale _selectedLocale = const Locale('id');
 
   void _toggleExpand() {
     setState(() {
@@ -29,37 +32,43 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    String languageText = _selectedLocale.languageCode == 'id' ? 'Indonesia' : 'English (UK)';
-    String languageImage = _selectedLocale.languageCode == 'id' ? 'assets/indonesia.png' : 'assets/english.png';
+    String languageText =
+        _selectedLocale.languageCode == 'id' ? 'Indonesia' : 'English (UK)';
+    String languageImage = _selectedLocale.languageCode == 'id'
+        ? 'assets/indonesia.png'
+        : 'assets/english_flag.png';
 
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 130.0), 
+          padding: const EdgeInsets.only(top: 130.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Center(
                 child: Image.asset(
-                  'assets/englishhh.png', 
+                  'assets/englishhh.png',
                   height: 175,
                 ),
               ),
-              SizedBox(height: 51), 
-              Text(
+              const SizedBox(
+                  height: 0), // Mengatur jarak antara gambar dan teks menjadi 0
+              const Text(
                 'Choose language preferences',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
-                  color: Color(0xFF333333), 
+                  color: Color(
+                      0xFF333333), // Mengatur warna teks menjadi hitam dengan kode 333333
                 ),
               ),
-              SizedBox(height: 10), 
+              const SizedBox(
+                  height: 10), // Mengatur jarak antara teks dan opsi bahasa
               GestureDetector(
                 onTap: _toggleExpand,
                 child: Container(
-                  width: 225, 
+                  width: 225,
                   decoration: BoxDecoration(
                     color: Colors.redAccent.shade100.withOpacity(0.2),
                     border: Border.all(color: Colors.redAccent),
@@ -68,21 +77,24 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
                                 Image.asset(languageImage, width: 24),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(languageText),
                               ],
                             ),
                             GestureDetector(
                               onTap: _toggleExpand,
                               child: Icon(
-                                _isExpanded ? Icons.expand_more : Icons.chevron_right,
+                                _isExpanded
+                                    ? Icons.expand_more
+                                    : Icons.chevron_right,
                                 color: Colors.black,
                               ),
                             ),
@@ -95,11 +107,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               ? [
                                   GestureDetector(
                                     onTap: () {
-                                      _selectLanguage(Locale('en'));
+                                      _selectLanguage(const Locale('en'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 15),
+                                      decoration: const BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(8),
@@ -108,9 +121,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Image.asset('assets/english.png', width: 24),
-                                          SizedBox(width: 10),
-                                          Text('English (UK)'),
+                                          Image.asset('assets/english_flag.png',
+                                              width: 24),
+                                          const SizedBox(width: 10),
+                                          const Text('English (UK)'),
                                         ],
                                       ),
                                     ),
@@ -119,11 +133,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               : [
                                   GestureDetector(
                                     onTap: () {
-                                      _selectLanguage(Locale('id'));
+                                      _selectLanguage(const Locale('id'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 15),
+                                      decoration: const BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(8),
@@ -132,9 +147,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Image.asset('assets/indonesia.png', width: 24),
-                                          SizedBox(width: 10),
-                                          Text('Indonesia'),
+                                          Image.asset('assets/indonesia.png',
+                                              width: 24),
+                                          const SizedBox(width: 10),
+                                          const Text('Indonesia'),
                                         ],
                                       ),
                                     ),
@@ -145,7 +161,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),

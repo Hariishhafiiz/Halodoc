@@ -1,71 +1,83 @@
-// ignore_for_file: file_names, prefer_const_constructors
+// ignore_for_file: file_names, prefer_const_constructors, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
+  final String usernameChat;
+  final String idChat;
+  final bool showCallButton;
+  final bool showProfileImage;
+  final String profileImagePath;
 
-  CustomAppBar({super.key}) : preferredSize = Size.fromHeight(82.0);
+  CustomAppBar({
+    super.key,
+    required this.usernameChat,
+    required this.idChat,
+    required this.showCallButton,
+    required this.showProfileImage,
+    required this.profileImagePath,
+  }) : preferredSize = Size.fromHeight(72.0);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: preferredSize.height,
       backgroundColor: Color(0xFFDF2155),
       leading: IconButton(
-        padding: EdgeInsets.only(top: 27),
         icon: Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
           // Handle back button press
         },
       ),
-      title: Padding(
-        padding: const EdgeInsets.only(top: 22.0),
-        child: Row(
-          children: [
-            // ignore: sized_box_for_whitespace
-            Container(
-              height: 45,
-              width: 45,
-              child: CircleAvatar(
-                  //backgroundImage: AssetImage(), // Replace with actual image path
-                  ),
+      title: Row(
+        children: [
+          if (showProfileImage)
+            Visibility(
+              visible: showProfileImage,
+              child: Container(
+                height: 45,
+                width: 45,
+                child: CircleAvatar(
+                  backgroundImage: profileImagePath.isNotEmpty
+                      ? AssetImage(profileImagePath)
+                      : null,
+                ),
+              ),
             ),
-            SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          if (showProfileImage) SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                usernameChat,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                ),
+              ),
+              if (idChat != null && idChat.isNotEmpty)
                 Text(
-                  'Hermione Granger',
+                  idChat,
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'CustomFont',
-                    fontSize: 17,
+                    fontSize: 12,
                   ),
                 ),
-                Text(
-                  'AB1234CDE',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'CustomFont',
-                      fontSize: 12),
-                ),
-              ],
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: IconButton(
+        if (showCallButton)
+          IconButton(
             icon: Icon(Icons.call, color: Colors.white),
             onPressed: () {
               // Handle call button press
             },
           ),
-        ),
       ],
     );
   }
