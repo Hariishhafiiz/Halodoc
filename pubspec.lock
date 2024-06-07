@@ -233,7 +233,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
-<<<<<<< HEAD
   csslib:
     dependency: transitive
     description:
@@ -242,8 +241,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-=======
->>>>>>> maritza/doctor
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -502,7 +499,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.19"
-<<<<<<< HEAD
   flutter_shaders:
     dependency: transitive
     description:
@@ -511,7 +507,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.2"
-=======
   flutter_svg:
     dependency: "direct main"
     description:
@@ -520,7 +515,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.6"
->>>>>>> maritza/doctor
   flutter_test:
     dependency: "direct dev"
     description: flutter
