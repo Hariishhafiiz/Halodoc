@@ -36,13 +36,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Customer Service',
+                  'Hermione Granger',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'CustomFont',
                     fontSize: 17,
                   ),
+                ),
+                Text(
+                  'AB1234CDE',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'CustomFont',
+                      fontSize: 12),
                 ),
               ],
             ),
