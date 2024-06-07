@@ -16,6 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
           // Handle back button press
+          Navigator.pop(context);
         },
       ),
       title: Padding(
@@ -35,20 +36,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hermione Granger',
+                  'Customer Service',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'CustomFont',
                     fontSize: 17,
                   ),
-                ),
-                Text(
-                  'AB1234CDE',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'CustomFont',
-                      fontSize: 12),
                 ),
               ],
             ),

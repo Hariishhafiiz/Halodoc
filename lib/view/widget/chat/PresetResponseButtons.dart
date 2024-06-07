@@ -18,7 +18,7 @@ class PresetResponseButtons extends StatelessWidget {
         children: <Widget>[
           PresetResponseButton(text: "Hallo", textController: textController),
           PresetResponseButton(
-              text: "Ya, pesanan sudah sesuai.",
+              text: "Bagaimana cara cancel konsultasi?",
               textController: textController),
           PresetResponseButton(
               text: "Terima kasih", textController: textController),

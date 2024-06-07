@@ -4,6 +4,8 @@ import 'package:rekmed/view/pages/login_page.dart';
 import 'package:rekmed/view/pages/home_page.dart';
 import 'package:rekmed/view/screens/Onboarding.dart';
 import 'package:rekmed/view/screens/InfoCustService.dart';
+import 'package:rekmed/view/pages/main_page.dart';
+import 'package:rekmed/view/screens/chat/Assistant.dart';
 
 
 class NavigationService{
@@ -15,6 +17,8 @@ class NavigationService{
     "/home":(context)=> Homepage(),
     "/onboarding":(context)=> OnboardingPage(setLocale: (locale) {},),
     "/infocustservice":(context)=> InfoCustService(),
+    "/mainpage":(context)=> const MainPage(),
+    "/assistant":(context)=> const Assistant(),
   };
 
   GlobalKey<NavigatorState>? get navigatorKey{

@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.montserratTextTheme(),
       ),
-      initialRoute: _authService.user !=null ? "/infocustservice": "/onboarding",
+      initialRoute: _authService.user !=null ? "/mainpage": "/onboarding",
       routes: _navigationService.routes,
     );
   }

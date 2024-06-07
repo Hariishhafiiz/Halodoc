@@ -36,7 +36,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Massages"),
+        title: Text("Messages"),
         actions: [
           IconButton(
             onPressed:()async{

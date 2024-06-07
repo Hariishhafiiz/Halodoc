@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:rekmed/service/auth_service.dart';
-import 'package:dash_chat_2/dash_chat_2.dart';
-import 'package:rekmed/model/user/user_profile.dart';
 import 'package:rekmed/service/navigation_service.dart';
+import 'package:rekmed/view/screens/chat/Assistant.dart';
 
 class InfoCustService extends StatefulWidget {
   const InfoCustService({Key? key}) : super(key: key);
@@ -14,28 +12,26 @@ class InfoCustService extends StatefulWidget {
 
 class _InfoCustServiceState extends State<InfoCustService> {
   final GetIt _getIt = GetIt.instance;
-  late AuthService _authService;
+  // late AuthService _authService;
   late String? name;
   late NavigationService _navigationService;
-  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _authService = _getIt.get<AuthService>();
+    // _authService = _getIt.get<AuthService>();
     _navigationService = _getIt.get<NavigationService>();
     // name = _authService.user!.displayName;
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 3) { // Jika ikon Inbox dipilih
-        _navigationService.pushReplacementNamed("/home");
-      }
-    });
-  }
-
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //     // if (index == 3) { // Jika ikon Inbox dipilih
+  //     //   _navigationService.pushReplacementNamed("/home");
+  //     // }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +51,16 @@ class _InfoCustServiceState extends State<InfoCustService> {
                   onPressed: () {},
                   child: Text(
                     'Haikal',
-                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
             ),
             Row(
               children: [
-                Text('Pogung Kidul', style: TextStyle(color: Colors.black, fontSize: 15.0)),
+                Text('Pogung Kidul',
+                    style: TextStyle(color: Colors.black, fontSize: 15.0)),
                 Icon(Icons.location_on, color: Colors.red),
               ],
             ),
@@ -78,14 +76,22 @@ class _InfoCustServiceState extends State<InfoCustService> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  buildFeatureButton(context, 'Chat dengan Dokter', 'assets/ChatDokter.png'),
-                  buildFeatureButton(context, 'Toko Kesehatan', 'assets/TokoKesehatan.png'),
-                  buildFeatureButton(context, 'Home Lab & Vaksinasi', 'assets/HomeLabVaksinasi.png'),
-                  buildFeatureButton(context, 'Asuransiku', 'assets/Asuransiku.png'),
-                  buildFeatureButton(context, 'Kesehatan Mental', 'assets/KesehatanMental.png'),
-                  buildFeatureButton(context, 'Haloskin', 'assets/Haloskin.png'),
-                  buildFeatureButton(context, 'Buat Janji Offline', 'assets/BuatJanjiOffline.png'),
-                  buildFeatureButton(context, 'Lihat Semua', 'assets/LihatSemua.png'),
+                  buildFeatureButton(
+                      context, 'Chat dengan Dokter', 'assets/ChatDokter.png'),
+                  buildFeatureButton(
+                      context, 'Toko Kesehatan', 'assets/TokoKesehatan.png'),
+                  buildFeatureButton(context, 'Home Lab & Vaksinasi',
+                      'assets/HomeLabVaksinasi.png'),
+                  buildFeatureButton(
+                      context, 'Asuransiku', 'assets/Asuransiku.png'),
+                  buildFeatureButton(context, 'Kesehatan Mental',
+                      'assets/KesehatanMental.png'),
+                  buildFeatureButton(
+                      context, 'Haloskin', 'assets/Haloskin.png'),
+                  buildFeatureButton(context, 'Buat Janji Offline',
+                      'assets/BuatJanjiOffline.png'),
+                  buildFeatureButton(
+                      context, 'Lihat Semua', 'assets/LihatSemua.png'),
                 ],
               ),
               buildPromoSection(),
@@ -117,19 +123,31 @@ class _InfoCustServiceState extends State<InfoCustService> {
         child: FloatingActionButton(
           onPressed: () {
             // Add your chat functionality here
+            // Go to chat screen
+            _navigationService
+              .push(MaterialPageRoute(builder: (context){
+                return const Assistant();
+                }
+              )
+            );
+
           },
           backgroundColor: Color(0xFFDF2155),
           child: Center(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Aligns icon and text at the center horizontally
+              mainAxisAlignment: MainAxisAlignment
+                  .center, // Aligns icon and text at the center horizontally
               children: [
                 Icon(Icons.chat, color: Colors.white),
-                SizedBox(width: 8), // Adjust the spacing between icon and text as needed
+                SizedBox(
+                    width:
+                        8), // Adjust the spacing between icon and text as needed
                 Flexible(
                   child: Text(
                     'Customer Service',
                     style: TextStyle(color: Colors.white),
-                    overflow: TextOverflow.ellipsis, // Handles overflow by ellipsizing text
+                    overflow: TextOverflow
+                        .ellipsis, // Handles overflow by ellipsizing text
                   ),
                 ),
               ],
@@ -138,51 +156,51 @@ class _InfoCustServiceState extends State<InfoCustService> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-
-
-
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: 'Inbox',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'More',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.history),
+      //       label: 'History',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.person),
+      //       label: 'Profile',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.mail),
+      //       label: 'Inbox',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.more_horiz),
+      //       label: 'More',
+      //     ),
+      //   ],
+      //   currentIndex: _selectedIndex,
+      //   selectedItemColor: Colors.red,
+      //   unselectedItemColor: Colors.grey,
+      //   onTap: _onItemTapped,
+      // ),
     );
   }
 
-  Widget buildFeatureButton(BuildContext context, String title, String imagePath) {
+  Widget buildFeatureButton(
+      BuildContext context, String title, String imagePath) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(title: title)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DetailPage(title: title)));
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(imagePath, width: 40, height: 40),
           SizedBox(height: 8),
-          Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+          Text(title,
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
         ],
       ),
     );
@@ -194,7 +212,8 @@ class _InfoCustServiceState extends State<InfoCustService> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Promo Menarik', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text('Promo Menarik',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           Container(
             height: 151,
             child: ListView(
@@ -223,7 +242,8 @@ class _InfoCustServiceState extends State<InfoCustService> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           Container(
             height: 120,
             child: ListView.builder(
@@ -254,7 +274,8 @@ class _InfoCustServiceState extends State<InfoCustService> {
           children: [
             Image.asset('assets/StethoscopeIcon.png', width: 30, height: 30),
             SizedBox(height: 8),
-            Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+            Text(title,
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
           ],
         ),
       ),
@@ -270,10 +291,12 @@ class _InfoCustServiceState extends State<InfoCustService> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Read 100+ New Articles', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Read 100+ New Articles',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               OutlinedButton(
                 onPressed: () {},
-                child: Text('See All', style: TextStyle(color: Colors.red, fontSize: 12)),
+                child: Text('See All',
+                    style: TextStyle(color: Colors.red, fontSize: 12)),
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: Colors.red, width: 1),
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -307,8 +330,12 @@ class _InfoCustServiceState extends State<InfoCustService> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                buildArticleCard('Folikulitis Bikin Gatal dan Nyeri? Dokter Ini Paham Pengobatannya', 'assets/Article1.png'),
-                buildArticleCard('7 Hal yang Bisa Menjaga Kesehatan Tulang Belakang', 'assets/Article1.png'),
+                buildArticleCard(
+                    'Folikulitis Bikin Gatal dan Nyeri? Dokter Ini Paham Pengobatannya',
+                    'assets/Article1.png'),
+                buildArticleCard(
+                    '7 Hal yang Bisa Menjaga Kesehatan Tulang Belakang',
+                    'assets/Article1.png'),
               ],
             ),
           ),
@@ -329,10 +356,12 @@ class _InfoCustServiceState extends State<InfoCustService> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(imagePath, fit: BoxFit.cover, width: double.infinity, height: 150),
+            Image.asset(imagePath,
+                fit: BoxFit.cover, width: double.infinity, height: 150),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              child: Text(title,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
