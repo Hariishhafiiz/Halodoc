@@ -39,7 +39,7 @@ class ClinicProfileState extends State<ClinicProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 height: 120.0,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -154,7 +154,7 @@ class InfoRow extends StatelessWidget {
   final String value;
   final Function(String)? onSave;
 
-  InfoRow({required this.title, required this.value, this.onSave});
+  const InfoRow({super.key, required this.title, required this.value, this.onSave});
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +189,7 @@ class InfoRow extends StatelessWidget {
                       content: TextField(
                         controller: controller,
                         decoration: InputDecoration(
-                          hintText: "$title",
+                          hintText: title,
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.teal),
                           ),

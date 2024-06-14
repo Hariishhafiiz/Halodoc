@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors, prefer_const_constructors_in_immutables
+// ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 
@@ -6,7 +6,7 @@ class PresetResponseButton extends StatelessWidget {
   final String text;
   final TextEditingController textController;
 
-  PresetResponseButton(
+  const PresetResponseButton(
       {super.key, required this.text, required this.textController});
 
   @override

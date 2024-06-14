@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:rekmed/service/navigation_service.dart';
-import 'package:rekmed/view/screens/chat/Assistant.dart';
+import 'package:my_app/models/user/user_profile.dart';
+import 'package:my_app/services/auth_service.dart';
+// import 'package:dash_chat_2/dash_chat_2.dart';
+// import 'package:my_app/models/user/user_profile.dart';
+import 'package:my_app/services/navigation_service.dart';
+import 'package:my_app/view/screens/chat/Assistant.dart';
+import 'package:my_app/services/database_service.dart';
+import 'package:my_app/globals.dart' as globals;
+import 'package:my_app/view/pages/recdoctor.dart';
+
 
 class InfoCustService extends StatefulWidget {
-  const InfoCustService({Key? key}) : super(key: key);
+  const InfoCustService({super.key});
 
   @override
   State<InfoCustService> createState() => _InfoCustServiceState();
@@ -12,26 +20,30 @@ class InfoCustService extends StatefulWidget {
 
 class _InfoCustServiceState extends State<InfoCustService> {
   final GetIt _getIt = GetIt.instance;
-  // late AuthService _authService;
-  late String? name;
+  final authService = AuthService();
+  late String name;
   late NavigationService _navigationService;
+  late DatabaseService _databaseService;
+  late UserProfile? userProfile;
+  // int _selectedIndex = 0;
+  
 
   @override
   void initState() {
     super.initState();
-    // _authService = _getIt.get<AuthService>();
     _navigationService = _getIt.get<NavigationService>();
-    // name = _authService.user!.displayName;
+    _databaseService = _getIt.get<DatabaseService>();
   }
 
   // void _onItemTapped(int index) {
   //   setState(() {
   //     _selectedIndex = index;
-  //     // if (index == 3) { // Jika ikon Inbox dipilih
-  //     //   _navigationService.pushReplacementNamed("/home");
-  //     // }
+  //     if (index == 3) { // Jika ikon Inbox dipilih
+  //       _navigationService.pushReplacementNamed("/home");
+  //     }
   //   });
   // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,31 +52,92 @@ class _InfoCustServiceState extends State<InfoCustService> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 15,
-                  backgroundImage: AssetImage('assets/ProfileIcon.png'),
-                ),
-                SizedBox(width: 8),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Haikal',
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text('Pogung Kidul',
-                    style: TextStyle(color: Colors.black, fontSize: 15.0)),
-                Icon(Icons.location_on, color: Colors.red),
-              ],
-            ),
-          ],
+          FutureBuilder<UserProfile?>(
+            future: _databaseService.getCurrentUserProfile(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Row(
+                  children: [
+                    const CircleAvatar(
+                      radius: 15,
+                      backgroundImage: AssetImage('assets/ProfileIcon.png'),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Loading...',
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Row(
+                  children: [
+                    const CircleAvatar(
+                      radius: 15,
+                      backgroundImage: AssetImage('assets/ProfileIcon.png'),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Error',
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasData && snapshot.data != null) {
+                final userProfile = snapshot.data!;
+                return Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 15,
+                      backgroundImage: userProfile.pfpURL != null
+                          ? NetworkImage(userProfile.pfpURL!)
+                          : const AssetImage('assets/ProfileIcon.png') as ImageProvider,
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () {
+                        // Add navigation or action here if needed
+                      },
+                      child: Text(
+                        userProfile.name ?? 'Guest',
+                        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return Row(
+                  children: [
+                    const CircleAvatar(
+                      radius: 15,
+                      backgroundImage: AssetImage('assets/ProfileIcon.png'),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Guest',
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
+          ),
+          const Row(
+            children: [
+              Text('Pogung Kidul', style: TextStyle(color: Colors.black, fontSize: 15.0)),
+              Icon(Icons.location_on, color: Colors.red),
+            ],
+          ),
+        ],
         ),
       ),
       body: Stack(
@@ -74,80 +147,65 @@ class _InfoCustServiceState extends State<InfoCustService> {
               GridView.count(
                 crossAxisCount: 4,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  buildFeatureButton(
-                      context, 'Chat dengan Dokter', 'assets/ChatDokter.png'),
-                  buildFeatureButton(
-                      context, 'Toko Kesehatan', 'assets/TokoKesehatan.png'),
-                  buildFeatureButton(context, 'Home Lab & Vaksinasi',
-                      'assets/HomeLabVaksinasi.png'),
-                  buildFeatureButton(
-                      context, 'Asuransiku', 'assets/Asuransiku.png'),
-                  buildFeatureButton(context, 'Kesehatan Mental',
-                      'assets/KesehatanMental.png'),
-                  buildFeatureButton(
-                      context, 'Haloskin', 'assets/Haloskin.png'),
-                  buildFeatureButton(context, 'Buat Janji Offline',
-                      'assets/BuatJanjiOffline.png'),
-                  buildFeatureButton(
-                      context, 'Lihat Semua', 'assets/LihatSemua.png'),
+                  buildFeatureButton(context, globals.lang == 'en' ? 'Chat with Doctor' : 'Chat dengan Dokter', 'assets/ChatDokter.png'),
+                  buildFeatureButton(context, globals.lang == 'en' ? 'Health Store' : 'Toko Kesehatan', 'assets/TokoKesehatan.png'),
+                  buildFeatureButton(context, globals.lang == 'en' ? 'Home lab and vaccination' : 'Home Lab & Vaksinasi', 'assets/HomeLabVaksinasi.png'),
+                  buildFeatureButton(context, globals.lang == 'en' ? 'My Insurace' : 'Asuransiku', 'assets/Asuransiku.png'),
+                  buildFeatureButton(context, globals.lang == 'en' ? 'Mental Health' : 'Kesehatan Mental', 'assets/KesehatanMental.png'),
+                  buildFeatureButton(context, 'Haloskin', 'assets/Haloskin.png'),
+                  buildFeatureButton(context, globals.lang == 'en' ? 'Make Offline Appointment' : 'Buat Janji Offline', 'assets/BuatJanjiOffline.png'),
+                  buildFeatureButton(context, globals.lang == 'en' ? 'See All' : 'Lihat Semua', 'assets/LihatSemua.png'),
                 ],
               ),
               buildPromoSection(),
-              buildProductSection('Tenang Menjaga Keluarga', [
-                'Injeksi Vit C',
+              buildProductSection(globals.lang == 'en' ? 'Take Care of Your Family' : 'Tenang Menjaga Keluarga', [
+                globals.lang == 'en' ? 'Vitamin C Injection' : 'Injeksi Vit C',
                 'Medical Check Up',
-                'Hematologi Lengkap',
-                'Vaksin HPV',
-                'Cek Ginjal'
+                globals.lang == 'en' ? 'Complete Hematology' : 'Hematologi Lengkap',
+                globals.lang == 'en' ? 'HPV Vaccine' : 'Vaksin HPV',
+                globals.lang == 'en' ? 'Kidney Check' : 'Cek Ginjal'
               ]),
-              buildProductSection('Produk Paling Diinginkan', [
+              buildProductSection(globals.lang == 'en' ? 'Most Desired Product' : 'Produk Paling Diinginkan', [
                 'Acne Skin Care',
                 'Cough & Flu',
                 'Vitamin',
                 'Mom & Baby Care',
-                'Kontrasepsi Wanita',
-                'Asma',
-                'Disfungsi Ereksi'
+                globals.lang == 'en' ? 'Female Contraception' : 'Kontrasepsi Wanita',
+                globals.lang == 'en' ? 'Asthma' : 'Asma',
+                globals.lang == 'en' ? 'Erectile Dysfunction' : 'Disfungsi Ereksi'
               ]),
               buildArticleSection(),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
             ],
           ),
         ],
       ),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         width: 180, // Adjust the width as needed
         height: 45,
         child: FloatingActionButton(
           onPressed: () {
-            // Add your chat functionality here
-            // Go to chat screen
             _navigationService
               .push(MaterialPageRoute(builder: (context){
                 return const Assistant();
                 }
               )
             );
-
           },
-          backgroundColor: Color(0xFFDF2155),
-          child: Center(
+          backgroundColor: const Color(0xFFDF2155),
+          child: const Center(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .center, // Aligns icon and text at the center horizontally
+              mainAxisAlignment: MainAxisAlignment.center, // Aligns icon and text at the center horizontally
               children: [
                 Icon(Icons.chat, color: Colors.white),
-                SizedBox(
-                    width:
-                        8), // Adjust the spacing between icon and text as needed
+                SizedBox(width: 8), // Adjust the spacing between icon and text as needed
                 Flexible(
                   child: Text(
                     'Customer Service',
                     style: TextStyle(color: Colors.white),
-                    overflow: TextOverflow
-                        .ellipsis, // Handles overflow by ellipsizing text
+                    overflow: TextOverflow.ellipsis, // Handles overflow by ellipsizing text
                   ),
                 ),
               ],
@@ -156,6 +214,9 @@ class _InfoCustServiceState extends State<InfoCustService> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+
+
+
       // bottomNavigationBar: BottomNavigationBar(
       //   items: const <BottomNavigationBarItem>[
       //     BottomNavigationBarItem(
@@ -187,20 +248,27 @@ class _InfoCustServiceState extends State<InfoCustService> {
     );
   }
 
-  Widget buildFeatureButton(
-      BuildContext context, String title, String imagePath) {
+  Widget buildFeatureButton(BuildContext context, String title, String imagePath) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailPage(title: title)));
+        if (title == 'Chat dengan Dokter' || title == 'Chat with Doctor') {
+          _navigationService
+              .push(MaterialPageRoute(builder: (context){
+                return const ChatWithDoctorPage();
+                }
+              )
+            );
+          return;
+        } else {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(title: title)));
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(imagePath, width: 40, height: 40),
-          SizedBox(height: 8),
-          Text(title,
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+          const SizedBox(height: 8),
+          Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12)),
         ],
       ),
     );
@@ -212,9 +280,8 @@ class _InfoCustServiceState extends State<InfoCustService> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Promo Menarik',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Container(
+          Text(globals.lang == 'en' ? 'Best Deals' : 'Promo Menarik', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(
             height: 151,
             child: ListView(
               scrollDirection: Axis.horizontal,
@@ -242,9 +309,8 @@ class _InfoCustServiceState extends State<InfoCustService> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Container(
+          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(
             height: 120,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -273,9 +339,8 @@ class _InfoCustServiceState extends State<InfoCustService> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/StethoscopeIcon.png', width: 30, height: 30),
-            SizedBox(height: 8),
-            Text(title,
-                textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+            const SizedBox(height: 8),
+            Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12)),
           ],
         ),
       ),
@@ -291,21 +356,19 @@ class _InfoCustServiceState extends State<InfoCustService> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Read 100+ New Articles',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(globals.lang == 'en' ? 'Read 100+ New Articles' : 'Baca 100+ Artikel Baru', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               OutlinedButton(
                 onPressed: () {},
-                child: Text('See All',
-                    style: TextStyle(color: Colors.red, fontSize: 12)),
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Colors.red, width: 1),
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  minimumSize: Size(0, 0),
+                  side: const BorderSide(color: Colors.red, width: 1),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  minimumSize: const Size(0, 0),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
+                child: const Text('See All', style: TextStyle(color: Colors.red, fontSize: 12)),
               ),
             ],
           ),
@@ -313,29 +376,25 @@ class _InfoCustServiceState extends State<InfoCustService> {
             padding: const EdgeInsets.only(top: 8.0),
             child: OutlinedButton(
               onPressed: () {},
-              child: Text('All', style: TextStyle(fontSize: 12)),
               style: OutlinedButton.styleFrom(
-                side: BorderSide(color: Colors.grey, width: 1),
-                padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-                minimumSize: Size(0, 0),
+                side: const BorderSide(color: Colors.grey, width: 1),
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+                minimumSize: const Size(0, 0),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
+              child: const Text('All', style: TextStyle(fontSize: 12)),
             ),
           ),
-          Container(
+          SizedBox(
             height: 250,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                buildArticleCard(
-                    'Folikulitis Bikin Gatal dan Nyeri? Dokter Ini Paham Pengobatannya',
-                    'assets/Article1.png'),
-                buildArticleCard(
-                    '7 Hal yang Bisa Menjaga Kesehatan Tulang Belakang',
-                    'assets/Article1.png'),
+                buildArticleCard('Folikulitis Bikin Gatal dan Nyeri? Dokter Ini Paham Pengobatannya', 'assets/Article1.png'),
+                buildArticleCard('7 Hal yang Bisa Menjaga Kesehatan Tulang Belakang', 'assets/Article1.png'),
               ],
             ),
           ),
@@ -356,12 +415,10 @@ class _InfoCustServiceState extends State<InfoCustService> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(imagePath,
-                fit: BoxFit.cover, width: double.infinity, height: 150),
+            Image.asset(imagePath, fit: BoxFit.cover, width: double.infinity, height: 150),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(title,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              child: Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -373,7 +430,7 @@ class _InfoCustServiceState extends State<InfoCustService> {
 class DetailPage extends StatelessWidget {
   final String title;
 
-  DetailPage({required this.title});
+  const DetailPage({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

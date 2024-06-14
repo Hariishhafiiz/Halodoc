@@ -1,17 +1,23 @@
+import 'dart:async';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:rekmed/model/user/user_profile.dart';
-import 'package:rekmed/service/database_service.dart';
+import 'package:flutter_background/flutter_background.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'package:my_app/models/user/user_profile.dart';
+import 'package:my_app/services/database_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
-import 'package:rekmed/service/auth_service.dart';
-import 'package:rekmed/service/media_service.dart';
-import 'package:rekmed/service/storage_service.dart';
-import 'package:rekmed/utils/utils.dart';
+import 'package:my_app/services/auth_service.dart';
+import 'package:my_app/services/media_service.dart';
+import 'package:my_app/services/storage_service.dart';
+import 'package:my_app/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
-import 'package:rekmed/model/user/chat.dart';
-import 'package:rekmed/model/user/massage.dart';
-import 'package:rekmed/view/widget/chat/CustomAppBars.dart';
+import 'package:my_app/models/user/chat.dart';
+import 'package:my_app/models/user/massage.dart';
+import 'package:my_app/view/widget/chat/CustomAppBars.dart';
 
 class ChatPage extends StatefulWidget {
   final UserProfile chatUser;
@@ -37,6 +43,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+
+    enableBackground();
+
     _authService = _getIt.get<AuthService>();
     _databaseService = _getIt.get<DatabaseService>();
     _mediaService = _getIt.get<MediaService>();
@@ -53,13 +62,47 @@ class _ChatPageState extends State<ChatPage> {
       firstName: widget.chatUser.name,
       profileImage: widget.chatUser.pfpURL,
     );
+
+    Timer(const Duration(minutes: 2), () async {
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 10,
+          channelKey: 'basic_channel',
+          actionType: ActionType.Default,
+          title: 'Peringatan!',
+          body: 'Anda belum melakukan konsultasi dengan pasien, segera lakukan konsultasi sekarang',
+        ),
+      );
+    });
+  }
+
+  Future<void> enableBackground() async {
+    await FlutterBackground.enableBackgroundExecution();
+
+    AwesomeNotifications().initialize(
+        null,
+        [
+          NotificationChannel(
+              channelGroupKey: 'basic_channel_group',
+              channelKey: 'basic_channel',
+              channelName: 'Basic notifications',
+              channelDescription: 'Notification channel for basic tests',
+              defaultColor: const Color(0xFF9D50DD),
+              ledColor: Colors.white)
+        ],
+        // Channel groups are only visual and are not required
+        channelGroups: [
+          NotificationChannelGroup(
+              channelGroupKey: 'basic_channel_group', channelGroupName: 'Basic group')
+        ],
+        debug: true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        uid :widget.chatUser.uid!,
+        uid: widget.chatUser.uid!,
         name: widget.chatUser.name!,
         pfpURL: widget.chatUser.pfpURL ?? '',
       ),
@@ -69,7 +112,9 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildUI() {
     return StreamBuilder(
-      stream: _databaseService.getChatData(currentUser!.id, otherUser!.id),
+      stream: widget.chatUser.role == 'doctor'
+          ? _databaseService.getDoctorChatData(currentUser!.id, otherUser!.id)
+          : _databaseService.getChatData(currentUser!.id, otherUser!.id),
       builder: (context, snapshot) {
         Chat? chat = snapshot.data?.data();
         List<ChatMessage> messages = [];
@@ -79,36 +124,42 @@ class _ChatPageState extends State<ChatPage> {
 
         return DashChat(
           messageOptions: MessageOptions(
-            currentUserContainerColor: Color(0xFFDDEBFF),
+            currentUserContainerColor: const Color(0xFFDDEBFF),
             currentUserTextColor: Colors.white,
-            //showCurrentUserAvatar: true,
-            //showOtherUsersAvatar: true,
-            messagePadding: EdgeInsets.symmetric(vertical: 13, horizontal: 20),
-            messageDecorationBuilder: (ChatMessage msg, ChatMessage? previousMsg, ChatMessage? nextMsg) {
+            // showCurrentUserAvatar: true,
+            // showOtherUsersAvatar: true,
+            messagePadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
+            messageDecorationBuilder:
+                (ChatMessage msg, ChatMessage? previousMsg, ChatMessage? nextMsg) {
               bool isCurrentUser = msg.user.id == currentUser!.id;
               return BoxDecoration(
-                
-                color: isCurrentUser ? Color(0xFFDDEBFF) : Colors.grey[300],
+                color: isCurrentUser ? const Color(0xFFDDEBFF) : Colors.grey[300],
                 borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0), // Top left corner
-                topRight: Radius.circular(20.0), // Top right corner
-                bottomLeft: Radius.circular(20.0),),
-                
+                    topLeft: const Radius.circular(20.0), // Top left corner
+                    topRight: const Radius.circular(20.0), // Top right corner
+                    bottomLeft: isCurrentUser
+                        ? const Radius.circular(20.0)
+                        : const Radius.circular(0),
+                    bottomRight: isCurrentUser
+                        ? const Radius.circular(0)
+                        : const Radius.circular(20.0) // Bottom right corner
+                    ),
                 boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 0,
-                  blurRadius: 4,
-                  offset: Offset(0, 4),
-                ),
-              ],
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 0,
+                    blurRadius: 2,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               );
             },
-            messageTextBuilder: (ChatMessage msg, ChatMessage? previousMsg, ChatMessage? nextMsg) {
+            messageTextBuilder:
+                (ChatMessage msg, ChatMessage? previousMsg, ChatMessage? nextMsg) {
               //bool isCurrentUser = msg.user.id == currentUser!.id;
               return Text(
                 msg.text,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,
                 ),
@@ -118,26 +169,25 @@ class _ChatPageState extends State<ChatPage> {
           inputOptions: InputOptions(
             alwaysShowSend: true,
             sendButtonBuilder: (onPressed) {
-            return IconButton(
-              icon: ImageIcon(
-                  AssetImage('assets/vector.png'), 
+              return IconButton(
+                icon: const ImageIcon(
+                  AssetImage('assets/vector.png'),
                   color: Color(0xFFDF2155),
-              ),
-              onPressed: onPressed,
+                ),
+                onPressed: onPressed,
               );
             },
-            inputDecoration: InputDecoration(
-              contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 15.0),
-                        border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(21.0)),
-                        borderSide: BorderSide(color: Color(0xFF8E8E8E)),
-                      ),
-                      hintText: 'Masukkan pesan...',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
+            inputDecoration: const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 15.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(21.0)),
+                borderSide: BorderSide(color: Color(0xFF8E8E8E)),
+              ),
+              hintText: 'Masukkan pesan...',
+              hintStyle: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
             ),
             trailing: [
               _mediaMessageButton(),
@@ -154,35 +204,52 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> _sendMessage(ChatMessage chatMessage) async {
     if (chatMessage.medias?.isNotEmpty ?? false) {
       if (chatMessage.medias!.first.type == MediaType.image) {
-        Message message = Message(
+        MessageObj message = MessageObj(
           senderID: chatMessage.user.id,
           content: chatMessage.medias!.first.url,
           messageType: MessageType.Image,
           sentAt: Timestamp.fromDate(chatMessage.createdAt),
         );
-        await _databaseService.sendChatMessage(
-          currentUser!.id,
-          otherUser!.id,
-          message,
-        );
+
+        if (widget.chatUser.role == 'doctor') {
+          await _databaseService.sendDoctorChatMessage(
+            currentUser!.id,
+            otherUser!.id,
+            message,
+          );
+        } else {
+          await _databaseService.sendChatMessage(
+            currentUser!.id,
+            otherUser!.id,
+            message,
+          );
+        }
       }
     } else {
-      Message message = Message(
+      MessageObj message = MessageObj(
         senderID: currentUser!.id,
         content: chatMessage.text,
         messageType: MessageType.Text,
         sentAt: Timestamp.fromDate(chatMessage.createdAt),
       );
 
-      await _databaseService.sendChatMessage(
-        currentUser!.id,
-        otherUser!.id,
-        message,
-      );
+      if (widget.chatUser.role == 'doctor') {
+        await _databaseService.sendDoctorChatMessage(
+          currentUser!.id,
+          otherUser!.id,
+          message,
+        );
+      } else {
+        await _databaseService.sendChatMessage(
+          currentUser!.id,
+          otherUser!.id,
+          message,
+        );
+      }
     }
   }
 
-  List<ChatMessage> _generateChatMessagesList(List<Message> messages) {
+  List<ChatMessage> _generateChatMessagesList(List<MessageObj> messages) {
     List<ChatMessage> chatMessages = messages.map((m) {
       if (m.messageType == MessageType.Image) {
         return ChatMessage(
@@ -205,7 +272,7 @@ class _ChatPageState extends State<ChatPage> {
       }
     }).toList();
 
-    chatMessages.sort((a, b) {
+    chatMessages.sort((b, a) {
       return b.createdAt.compareTo(a.createdAt);
     });
 

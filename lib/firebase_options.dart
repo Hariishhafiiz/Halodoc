@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -49,21 +40,49 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBd5VGI3JOABB0y09bxROGjDWwdwXC1e9Y',
+    appId: '1:474760710820:web:d885d70d1229128ffdf431',
+    messagingSenderId: '474760710820',
+    projectId: 'chating-2ed0b',
+    authDomain: 'chating-2ed0b.firebaseapp.com',
+    storageBucket: 'chating-2ed0b.appspot.com',
+    measurementId: 'G-VTDBV494ZT',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyANSrkiR0_nrRlITqvQv1UA7gA3Vye_J-A',
-    appId: '1:713017834495:android:8b17a872e80a7ad9a285ca',
-    messagingSenderId: '713017834495',
-    projectId: 'rekmed-data-center',
-    storageBucket: 'rekmed-data-center.appspot.com',
+    apiKey: 'AIzaSyBOtSBWM371PmfhpT4ng7gtBoGNjIX22w0',
+    appId: '1:474760710820:android:04c8349311399e09fdf431',
+    messagingSenderId: '474760710820',
+    projectId: 'chating-2ed0b',
+    storageBucket: 'chating-2ed0b.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCNbuxLWN3KThX8W9rtzBR9BJSST9GrpYc',
-    appId: '1:713017834495:ios:0c9d706e45b43d95a285ca',
-    messagingSenderId: '713017834495',
-    projectId: 'rekmed-data-center',
-    storageBucket: 'rekmed-data-center.appspot.com',
-    iosBundleId: 'com.example.rekmed',
+    apiKey: 'AIzaSyD2fCsmmV0ZwcLcwmE9kSZHPXX4uMPjuik',
+    appId: '1:474760710820:ios:c7fa6459cb9dbd23fdf431',
+    messagingSenderId: '474760710820',
+    projectId: 'chating-2ed0b',
+    storageBucket: 'chating-2ed0b.appspot.com',
+    iosBundleId: 'com.example.myApp',
   );
 
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyD2fCsmmV0ZwcLcwmE9kSZHPXX4uMPjuik',
+    appId: '1:474760710820:ios:c7fa6459cb9dbd23fdf431',
+    messagingSenderId: '474760710820',
+    projectId: 'chating-2ed0b',
+    storageBucket: 'chating-2ed0b.appspot.com',
+    iosBundleId: 'com.example.myApp',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBd5VGI3JOABB0y09bxROGjDWwdwXC1e9Y',
+    appId: '1:474760710820:web:2e9b07ddf8e4bdd5fdf431',
+    messagingSenderId: '474760710820',
+    projectId: 'chating-2ed0b',
+    authDomain: 'chating-2ed0b.firebaseapp.com',
+    storageBucket: 'chating-2ed0b.appspot.com',
+    measurementId: 'G-2V2NJHREWG',
+  );
 }

@@ -1,9 +1,9 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:rekmed/view/widget/chat/ChatMessage.dart';
-import 'package:rekmed/view/widget/chat/CustomAppBar.dart';
-import 'package:rekmed/view/widget/chat/PresetResponseButtons.dart';
+import 'package:my_app/view/widget/chat/ChatMessage.dart';
+import 'package:my_app/view/widget/chat/CustomAppBar.dart';
+import 'package:my_app/view/widget/chat/PresetResponseButtons.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});

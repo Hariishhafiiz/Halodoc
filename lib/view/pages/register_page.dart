@@ -1,17 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
-import 'package:rekmed/model/user/user_profile.dart';
-import 'package:rekmed/service/alert_service.dart';
-import 'package:rekmed/service/auth_service.dart';
-import 'package:rekmed/service/database_service.dart';
-import 'package:rekmed/service/media_service.dart';
-import 'package:rekmed/service/navigation_service.dart';
-import 'package:rekmed/service/storage_service.dart';
-import 'package:rekmed/view/widget/login/const.dart';
-import 'package:rekmed/view/widget/login/custom_form.dart';
+import 'package:my_app/models/user/user_profile.dart';
+import 'package:my_app/services/alert_service.dart';
+import 'package:my_app/services/auth_service.dart';
+import 'package:my_app/services/database_service.dart';
+import 'package:my_app/services/media_service.dart';
+import 'package:my_app/services/navigation_service.dart';
+import 'package:my_app/services/storage_service.dart';
+import 'package:my_app/view/widget/login/const.dart';
+import 'package:my_app/view/widget/login/custom_form.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -34,6 +32,7 @@ class _RegisterPageState extends State <RegisterPage> {
   File ? selectedImage;
   bool isLoading = false;
 
+  @override
   void initState(){
     super.initState();
     _mediaService = _getIt.get<MediaService>();
@@ -79,7 +78,7 @@ class _RegisterPageState extends State <RegisterPage> {
   }
 
   Widget _headerText() {
-    return SizedBox(
+    return const SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +171,7 @@ Widget _pfpselectionfiled(){
       radius: MediaQuery.of(context).size.width * 0.15,
       backgroundImage: selectedImage!=null 
         ?FileImage(selectedImage!)
-        :NetworkImage(PLACEHOLDER_PFP)as ImageProvider,
+        :const NetworkImage(PLACEHOLDER_PFP)as ImageProvider,
       ),
   );
   }
@@ -197,7 +196,7 @@ Widget _registerButton() {
                   uid: _authService.user!.uid,
                 );
               } else {
-                pfpURL = 'https://example.com/default-pfp.png'; // URL gambar profil default
+                pfpURL = 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg'; // URL gambar profil default
               }
               await _databaseService.createUserProfile(
                 userProfile: UserProfile(

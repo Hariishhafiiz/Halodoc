@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:rekmed/service/alert_service.dart';
-import 'package:rekmed/service/auth_service.dart';
-import 'package:rekmed/service/navigation_service.dart';
-import 'package:rekmed/view/widget/login/const.dart';
-import 'package:rekmed/view/widget/login/custom_form.dart';
+import 'package:my_app/services/alert_service.dart';
+import 'package:my_app/services/auth_service.dart';
+import 'package:my_app/services/navigation_service.dart';
+import 'package:my_app/view/widget/login/const.dart';
+import 'package:my_app/view/widget/login/custom_form.dart';
 import 'package:get_it/get_it.dart';
+import 'package:my_app/globals.dart' as globals;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key ? key}) : super(key: key);
+  const LoginPage({super.key});
 
 
   @override
@@ -34,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     _alertService = _getIt.get<AlertService>();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Login",
             style: TextStyle(
               fontSize: 20,
@@ -72,8 +73,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Text(
-            "Halo",
-            style: TextStyle(
+            globals.lang == 'en' ? "Login to your account" : "Masuk ke akun anda",
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w500,
               color: Colors.grey,
@@ -133,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
             print(result);
             
             if(result){
-              _navigationService.pushReplacementNamed("/infocustservice");
+              _navigationService.pushReplacementNamed("/mainpage");
 
             }else{
               _alertService.showToast(
@@ -143,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
               }
           }
         },
-        color: Theme.of(context).colorScheme.primary,
+        color: Colors.red[700],
         child: const Text(
           "Login",
           style: TextStyle(
@@ -161,14 +162,14 @@ class _LoginPageState extends State<LoginPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text("Don't Have an account? "),
+        Text(globals.lang == 'en' ? "Don't Have an account? " : "Belum punya akun? "),
         GestureDetector(
           onTap: () {
             _navigationService.pushNamed("/Register");
           },
           child: Text(
-            "Sign Up",
-            style: TextStyle(
+            globals.lang == 'en' ? "Sign Up" : "Daftar",
+            style: const TextStyle(
               fontWeight: FontWeight.w800,
             ),
           ),

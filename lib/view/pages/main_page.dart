@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rekmed/service/navigation_service.dart';
-import 'package:rekmed/view/screens/InfoCustService.dart';
-import 'package:rekmed/view/pages/home_page.dart';
-import 'package:rekmed/view/screens/chat/Assistant.dart';
+import 'package:my_app/view/screens/InfoCustService.dart';
+import 'package:my_app/view/pages/home_page.dart';
+// import 'package:my_app/generated/l10n.dart';
+import 'package:my_app/globals.dart' as globals;
+
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -15,19 +16,19 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    InfoCustService(),
+  final List<Widget> _widgetOptions = <Widget>[
+    const InfoCustService(),
     Text(
-      'Riwayat Transaksi',
+      globals.lang == 'en' ? 'Transaction History' : 'Riwayat Transaksi',
       style: optionStyle,
     ),
-    Text(
+    const Text(
       'Profil',
       style: optionStyle,
     ),
-    Homepage(),
+    const Homepage(),
     Text(
-      'Lainnya',
+      globals.lang == 'en' ? 'Others' : 'Lainnya',
       style: optionStyle,
     ),
   ];

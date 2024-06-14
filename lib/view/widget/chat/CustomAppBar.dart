@@ -34,9 +34,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 Text(
-                  'Hermione Granger',
+                  'Customer Service',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -44,13 +44,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     fontSize: 17,
                   ),
                 ),
-                Text(
-                  'AB1234CDE',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'CustomFont',
-                      fontSize: 12),
-                ),
+                // Text(
+                //   'AB1234CDE',
+                //   style: TextStyle(
+                //       color: Colors.white,
+                //       fontFamily: 'CustomFont',
+                //       fontSize: 12),
+                // ),
               ],
             ),
           ],

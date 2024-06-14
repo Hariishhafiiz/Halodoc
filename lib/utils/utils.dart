@@ -1,12 +1,12 @@
-import 'package:rekmed/firebase_options.dart';
+import 'package:my_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:rekmed/service/alert_service.dart';
-import 'package:rekmed/service/auth_service.dart';
+import 'package:my_app/services/alert_service.dart';
+import 'package:my_app/services/auth_service.dart';
 import 'package:get_it/get_it.dart';
-import 'package:rekmed/service/database_service.dart';
-import 'package:rekmed/service/media_service.dart';
-import 'package:rekmed/service/navigation_service.dart';
-import 'package:rekmed/service/storage_service.dart';
+import 'package:my_app/services/database_service.dart';
+import 'package:my_app/services/media_service.dart';
+import 'package:my_app/services/navigation_service.dart';
+import 'package:my_app/services/storage_service.dart';
 
 
 

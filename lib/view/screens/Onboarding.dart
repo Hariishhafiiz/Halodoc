@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rekmed/service/navigation_service.dart';
-import 'package:get_it/get_it.dart';
+import 'package:my_app/globals.dart' as globals;
 
 class OnboardingPage extends StatefulWidget {
   final Function(Locale) setLocale;
 
-  OnboardingPage({required this.setLocale});
+  const OnboardingPage({super.key, required this.setLocale});
 
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
@@ -13,10 +12,7 @@ class OnboardingPage extends StatefulWidget {
 
 class _OnboardingPageState extends State<OnboardingPage> {
   bool _isExpanded = false;
-  Locale _selectedLocale = Locale('id');
-  final GetIt _getIt = GetIt.instance;
-
-  late NavigationService _navigationService;
+  Locale _selectedLocale = const Locale('id');
 
   void _toggleExpand() {
     setState(() {
@@ -24,9 +20,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
-    _navigationService = _getIt.get<NavigationService>();
   }
 
   void _selectLanguage(Locale locale) {
@@ -35,6 +31,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       _isExpanded = false;
     });
     widget.setLocale(locale);
+    globals.lang = locale.languageCode;
     // You might want to save the language preference here
   }
 
@@ -49,35 +46,32 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 50.0), // Menambah padding atas
+          padding: const EdgeInsets.only(top: 50.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 30.0),
                 child: Image.asset(
-                  'assets/LanguageOnboarding.png', // Pastikan path ke gambar benar
+                  'assets/LanguageOnboarding.png',
                   height: 322,
                 ),
               ),
-              SizedBox(
-                  height: 0), // Mengatur jarak antara gambar dan teks menjadi 0
+              const SizedBox(height: 0),
               Text(
-                'Choose language preferences',
-                style: TextStyle(
+                globals.lang == 'en' ? 'Choose language preferences' : 'Pilih preferensi bahasa',
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
-                  color: Color(
-                      0xFF333333), // Mengatur warna teks menjadi hitam dengan kode 333333
+                  color: Color(0xFF333333),
                 ),
               ),
-              SizedBox(
-                  height: 10), // Mengatur jarak antara teks dan opsi bahasa
+              const SizedBox(height: 10),
               GestureDetector(
                 onTap: _toggleExpand,
                 child: Container(
-                  width: 225, // Mengurangi lebar container
+                  width: 225,
                   decoration: BoxDecoration(
                     color: Colors.redAccent.shade100.withOpacity(0.2),
                     border: Border.all(color: Colors.redAccent),
@@ -87,14 +81,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     children: [
                       Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
                                 Image.asset(languageImage, width: 24),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(languageText),
                               ],
                             ),
@@ -116,12 +110,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               ? [
                                   GestureDetector(
                                     onTap: () {
-                                      _selectLanguage(Locale('en'));
+                                      _selectLanguage(const Locale('en'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(8),
@@ -132,8 +126,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                         children: [
                                           Image.asset('assets/english.png',
                                               width: 24),
-                                          SizedBox(width: 10),
-                                          Text('English (UK)'),
+                                          const SizedBox(width: 10),
+                                          const Text('English (UK)'),
                                         ],
                                       ),
                                     ),
@@ -142,12 +136,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               : [
                                   GestureDetector(
                                     onTap: () {
-                                      _selectLanguage(Locale('id'));
+                                      _selectLanguage(const Locale('id'));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(8),
@@ -158,8 +152,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                         children: [
                                           Image.asset('assets/indonesia.png',
                                               width: 24),
-                                          SizedBox(width: 10),
-                                          Text('Indonesia'),
+                                          const SizedBox(width: 10),
+                                          const Text('Indonesia'),
                                         ],
                                       ),
                                     ),
@@ -170,24 +164,23 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 30.0), // Add padding for the button
+                padding: const EdgeInsets.only(bottom: 30.0),
                 child: ElevatedButton(
                   onPressed: () async {
-                    _navigationService.pushReplacementNamed("/login");
+                    Navigator.pushNamed(context, '/login');
                   },
-                  child: Text('Next'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent, // Background color
-                    foregroundColor: Colors.white, // Text color
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    textStyle: TextStyle(fontSize: 16),
+                    backgroundColor: Colors.redAccent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+                  child: Text(globals.lang == 'en' ? 'Next' : 'Lanjut'),
                 ),
               ),
             ],

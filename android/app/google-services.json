@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "713017834495",
-    "project_id": "rekmed-data-center",
-    "storage_bucket": "rekmed-data-center.appspot.com"
+    "project_number": "474760710820",
+    "project_id": "chating-2ed0b",
+    "storage_bucket": "chating-2ed0b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:713017834495:android:8b17a872e80a7ad9a285ca",
+        "mobilesdk_app_id": "1:474760710820:android:04c8349311399e09fdf431",
         "android_client_info": {
-          "package_name": "com.example.rekmed"
+          "package_name": "com.example.my_app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyANSrkiR0_nrRlITqvQv1UA7gA3Vye_J-A"
+          "current_key": "AIzaSyBOtSBWM371PmfhpT4ng7gtBoGNjIX22w0"
         }
       ],
       "services": {
